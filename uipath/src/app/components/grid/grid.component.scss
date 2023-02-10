@@ -1,0 +1,39 @@
+table {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+
+    tr {
+        text-align: center;
+    }
+
+    th {
+        border-bottom: 1px solid black;
+    }
+
+    thead {
+        margin-bottom: 10px;
+    }
+}
+
+.pagination-control {
+    display: flex;
+
+    .vertical-flex-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .pagination-item {
+        cursor: pointer;
+    }
+
+    .pagination-page-number {
+        margin: 0 0.5rem;
+    }
+
+    .pagination-item-enabled {
+        color: red;
+    }
+}
