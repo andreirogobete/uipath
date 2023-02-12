@@ -6,5 +6,5 @@ import { Directive, Input } from '@angular/core';
 export class GridEntryDirective {
   @Input() title: string = '';
   @Input() property: string = '';
-  @Input('boolean-attribute') sortable: boolean = false;
+  @Input() sortable: boolean = false;
 }

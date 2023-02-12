@@ -5,9 +5,9 @@
   (pageSizeChange)="handlePageSizeChange($event)"
   (pageNumberChange)="handlePageNumberChange($event)"
 >
-  <t-entry property="id" title="ID" sortable></t-entry>
-  <t-entry property="firstName" title="First Name" sortable></t-entry>
-  <t-entry property="lastName" title="Last Name" sortable></t-entry>
+  <t-entry property="id" title="ID" [sortable]=true></t-entry>
+  <t-entry property="firstName" title="First Name" [sortable]=true></t-entry>
+  <t-entry property="lastName" title="Last Name" [sortable]=true></t-entry>
   <t-entry property="username" title="Username"></t-entry>
   <t-entry property="role" title="Role"></t-entry>
 </t-grid>

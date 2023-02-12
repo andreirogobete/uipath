@@ -84,7 +84,6 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
 
     if (!this.pageSize) {
       // Set the page size to the number of data.count
-      console.log(this.gridData.length)
       this.pageSize = this.gridData.length;
     }
 
@@ -104,7 +103,6 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
 
     pagingOptions.sort((left: number, right: number) => left - right);
     this.pageSizeOptions = pagingOptions;
-    console.log(this.pageSizeOptions)
   }
 
   ngOnDestroy(): void {
@@ -141,6 +139,10 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   handleSort(propertyName: string) {
+    // If sorting is not enabled for the column, do nothing
+    if (!this.gridHeaderConfig.find(entry => entry.property === propertyName)?.sortable) {
+      return;
+    }
     const sortColumn = this.sortConfig?.column;
     const sortDirection = this.sortConfig?.direction;
 
