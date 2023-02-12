@@ -1,6 +1,18 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList
+} from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { GridEntryComponent } from './components/grid-entry/grid-entry.component';
+import { DEFAULT_GRID_PAGE_NUMBER, DEFAULT_GRID_PAGE_SIZE, GRID_PAGINATION_OPTIONS } from './constants/grid.constants';
+import { GridEntryDirective } from './directives/grid-entry/grid-entry.directive';
 import { SortChange } from './types/grid-types';
 
 @Component({
@@ -8,7 +20,7 @@ import { SortChange } from './types/grid-types';
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss']
 })
-export class GridComponent implements AfterContentInit, OnInit, OnChanges, OnDestroy {
+export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
   @Input() data: Observable<any[]> = new Observable<any[]>();
   @Input() pageSize: number | null = null;
 
@@ -19,34 +31,51 @@ export class GridComponent implements AfterContentInit, OnInit, OnChanges, OnDes
   gridData: any[] = []
   displayedData: any[] = [];
 
-  // Used for pagination
-  skip: number = 0;
-  pageCount: number = 1;
-  currentPage = this.pageCount;
+  // Pagination
+  totalPageCount: number = DEFAULT_GRID_PAGE_NUMBER;
+  currentPage: number = DEFAULT_GRID_PAGE_NUMBER;
+  pageSizeOptions = GRID_PAGINATION_OPTIONS;
+  paginationForm = this.formBuilder.group({
+    pageSize: [DEFAULT_GRID_PAGE_SIZE]
+  });
 
-  // Children config to get table headers
-  @ContentChildren(GridEntryComponent) gridEntries!: QueryList<GridEntryComponent>;
+  // Children config to get table headers via directives
+  @ContentChildren(GridEntryDirective) gridHeaders!: QueryList<GridEntryDirective>;
 
-  gridEntriesConfig: GridEntryComponent[] = [];
+  gridHeaderConfig: GridEntryDirective[] = [];
 
   private subscription = new Subscription();
 
+  constructor(private formBuilder: FormBuilder) {}
+
   ngAfterContentInit(): void {
-    this.gridEntriesConfig = this.gridEntries.toArray();
+    this.gridHeaderConfig = this.gridHeaders.toArray();
   }
 
   ngOnInit(): void {
     if (this.data instanceof Observable) {
       const sub = this.data.subscribe((items: any[]) => {
         this.setGridData(items);
-      })
+      });
+      this.subscription.add(sub);
     } else {
-      console.log('NU')
+      // TODO: Handle data when not an observable
     }
+
+    this.initializePageSize();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
+  private initializePageSize() {
+    const formSub = this.paginationForm.valueChanges.subscribe(value => {
+      this.computeDisplayedData(true);
+      // Page size should always be non-null when the value changes since the select contains a list of possible values.
+      this.pageSizeChange.emit(Number(value.pageSize));
+    });
+    this.subscription.add(formSub);
+
+    if (!!this.pageSize) {
+      this.paginationForm.get('pageSize')?.setValue(this.pageSize);
+    }
   }
 
   ngOnDestroy(): void {
@@ -60,23 +89,29 @@ export class GridComponent implements AfterContentInit, OnInit, OnChanges, OnDes
     }
   }
 
-  private computeDisplayedData() {
-    const pageSize = this.pageSize!;
-    const dataCount = this.gridData.length;
-    this.pageCount = Math.ceil(dataCount / pageSize);
+  // Dev note: Potentially, this can be located into a "grid-paging.service" for the logic
+  private computeDisplayedData(moveToFirstPage: boolean = false) {
+    const itemsCount = this.gridData.length;
+    const pageSize = Number(this.paginationForm.get('pageSize')?.getRawValue()) || DEFAULT_GRID_PAGE_SIZE;
+    this.totalPageCount = Math.ceil(itemsCount / pageSize);
+
+    this.updateDisplayedData(pageSize, moveToFirstPage);
+  }
+
+  private updateDisplayedData(pageSize: number, moveToFirstPage: boolean = false) {
+    if (moveToFirstPage) {
+      this.currentPage = DEFAULT_GRID_PAGE_NUMBER;
+    }
     const startIndex = (this.currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-
-    console.log(startIndex, endIndex, this.currentPage)
-
     this.displayedData = this.gridData.slice(startIndex, endIndex);
   }
 
   handlePageChange(pageNumber: number) {
-    console.log(pageNumber);
     this.currentPage = pageNumber;
     if (this.pageSize) {
       this.computeDisplayedData();
+      this.pageNumberChange.emit(pageNumber);
     }
   }
 }

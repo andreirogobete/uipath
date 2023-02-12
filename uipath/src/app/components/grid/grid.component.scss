@@ -1,6 +1,9 @@
+@import '../../style/colors.scss';
+
 table {
     display: table;
     table-layout: fixed;
+    border-spacing: 0;
     width: 100%;
 
     tr {
@@ -8,7 +11,13 @@ table {
     }
 
     th {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid $black;
+        background-color: $light-blue;
+        padding: 0.25rem;
+    }
+
+    td {
+        padding: 0.25rem;
     }
 
     thead {
@@ -27,6 +36,15 @@ table {
 
     .pagination-item {
         cursor: pointer;
+        margin: 0 0.5rem;
+    }
+
+    button.pagination-item {
+        background-color: $white;
+        border-radius: 25px;
+        width: 26px;
+        height: 26px;
+        padding: 0;
     }
 
     .pagination-page-number {
@@ -34,6 +52,6 @@ table {
     }
 
     .pagination-item-enabled {
-        color: red;
+        color: $dark-blue;
     }
 }

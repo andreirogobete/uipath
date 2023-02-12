@@ -1,19 +1,33 @@
 <table>
     <thead>
-        <th *ngFor="let gridEntry of gridEntriesConfig">
+        <th *ngFor="let gridEntry of gridHeaderConfig">
             {{gridEntry.title}}
         </th>
     </thead>
     <tbody>
         <tr *ngFor="let item of displayedData">
-            <td *ngFor="let gridEntry of gridEntriesConfig">
+            <td *ngFor="let gridEntry of gridHeaderConfig">
                 {{item[gridEntry['property']]}}
             </td>
         </tr>
     </tbody>
 </table>
 
-<div *ngIf="!!pageSize && gridData.length > pageSize" class="pagination-control">
+<!-- Dev Note: Potentially, this can be located in a standalone component -->
+<form [formGroup]="paginationForm" class="pagination-control">
+    <select
+        class="pagination-form-select pagination-item"
+        formControlName="pageSize"
+        aria-label="Page size"
+    >
+        <option *ngFor="let option of pageSizeOptions" [value]="option">
+            {{option}}
+        </option>
+    </select>
+    <div class="pagination-form-current-page vertical-flex-container">
+        Page {{currentPage}} of {{totalPageCount}}
+    </div>
+
     <button
         [disabled]="currentPage === 1"
         (click)="handlePageChange(currentPage - 1)"
@@ -22,20 +36,13 @@
     >
         <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
-    <div
-        *ngFor="let page of [].constructor(pageCount); index as i"
-        class="vertical-flex-container pagination-page-number pagination-item"
-        [ngClass]="{'pagination-item-enabled': i + 1 === currentPage}"
-        (click)="handlePageChange(i + 1)"
-    >
-        {{i + 1}}
-    </div>
+
     <button
-        [disabled]="currentPage === pageCount"
+        [disabled]="currentPage === totalPageCount"
         (click)="handlePageChange(currentPage + 1)"
         class="vertical-flex-container pagination-item"
         data-test-id="pagination-right"
     >
         <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
-</div>
+</form>
