@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Subscription, switchMap } from 'rxjs';
+import { SortConfigDirection } from './components/grid/types/grid-types';
 
 @Component({
   selector: 'app-root',
@@ -30,5 +31,20 @@ export class AppComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  // Grid Events -> Console log only
+  handleSortChange(event: any) {
+    const { column, direction } = event;
+    const directionString = direction === SortConfigDirection.ASC ? 'ASC' : 'DESC';
+    console.log(`Grid sort chaged for column ${column} with direction ${directionString}.`);
+  }
+
+  handlePageSizeChange(event: any) {
+    console.log(`Grid page size has changed to ${event} items per page.`);
+  }
+
+  handlePageNumberChange(event: any) {
+    console.log(`Grid page number has changed to page number ${event}.`)
   }
 }

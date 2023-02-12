@@ -1,9 +1,9 @@
-export interface SortChange {
+export interface SortConfig {
     column: string;
-    direction: SortChangeDirection;
+    direction: SortConfigDirection;
 }
 
-export enum SortChangeDirection {
+export enum SortConfigDirection {
     ASC,
     DESC
 }

@@ -1,5 +1,4 @@
-import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { SortChange } from '../../types/grid-types';
+import { Directive, Input } from '@angular/core';
 
 @Directive({
   selector: 't-entry'

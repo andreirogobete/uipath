@@ -11,9 +11,10 @@ import {
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { DEFAULT_GRID_PAGE_NUMBER, DEFAULT_GRID_PAGE_SIZE, GRID_PAGINATION_OPTIONS } from './constants/grid.constants';
+import { DEFAULT_GRID_PAGE_NUMBER, DEFAULT_GRID_PAGE_SIZE, DEFAULT_GRID_PAGINATION_OPTIONS } from './constants/grid.constants';
 import { GridEntryDirective } from './directives/grid-entry/grid-entry.directive';
-import { SortChange } from './types/grid-types';
+import { SortConfig, SortConfigDirection } from './types/grid-types';
+import { sortData } from './util/data-sorting.helper';
 
 @Component({
   selector: 't-grid',
@@ -24,7 +25,7 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
   @Input() data: Observable<any[]> = new Observable<any[]>();
   @Input() pageSize: number | null = null;
 
-  @Output() sortChange = new EventEmitter<SortChange>();
+  @Output() sortChange = new EventEmitter<SortConfig>();
   @Output() pageNumberChange = new EventEmitter<number>();
   @Output() pageSizeChange = new EventEmitter<number>();
 
@@ -34,10 +35,15 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
   // Pagination
   totalPageCount: number = DEFAULT_GRID_PAGE_NUMBER;
   currentPage: number = DEFAULT_GRID_PAGE_NUMBER;
-  pageSizeOptions = GRID_PAGINATION_OPTIONS;
+  pageSizeOptions = DEFAULT_GRID_PAGINATION_OPTIONS;
   paginationForm = this.formBuilder.group({
     pageSize: [DEFAULT_GRID_PAGE_SIZE]
   });
+
+  // Sorting
+  sortConfig: SortConfig | null = null;
+
+  readonly sortConfigDirection = SortConfigDirection;
 
   // Children config to get table headers via directives
   @ContentChildren(GridEntryDirective) gridHeaders!: QueryList<GridEntryDirective>;
@@ -56,26 +62,49 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
     if (this.data instanceof Observable) {
       const sub = this.data.subscribe((items: any[]) => {
         this.setGridData(items);
+        this.initializePageSize();
       });
       this.subscription.add(sub);
     } else {
       // TODO: Handle data when not an observable
     }
 
-    this.initializePageSize();
+    // this.initializePageSize();
   }
 
   private initializePageSize() {
     const formSub = this.paginationForm.valueChanges.subscribe(value => {
       this.computeDisplayedData(true);
       // Page size should always be non-null when the value changes since the select contains a list of possible values.
-      this.pageSizeChange.emit(Number(value.pageSize));
+      if (this.pageSize !== value.pageSize) {
+        this.pageSizeChange.emit(Number(value.pageSize));
+      }
     });
     this.subscription.add(formSub);
 
-    if (!!this.pageSize) {
-      this.paginationForm.get('pageSize')?.setValue(this.pageSize);
+    if (!this.pageSize) {
+      // Set the page size to the number of data.count
+      console.log(this.gridData.length)
+      this.pageSize = this.gridData.length;
     }
+
+    this.paginationForm.get('pageSize')?.setValue(this.pageSize);
+    this.setPageSizeOptions();
+  }
+
+  private setPageSizeOptions() {
+    let pagingOptions: number[] = [];
+    if (this.pageSize) {
+      if (!DEFAULT_GRID_PAGINATION_OPTIONS.includes(this.pageSize)) {
+        pagingOptions = [...DEFAULT_GRID_PAGINATION_OPTIONS, this.pageSize];
+      }
+    } else {
+      pagingOptions = [...DEFAULT_GRID_PAGINATION_OPTIONS, this.gridData.length];
+    }
+
+    pagingOptions.sort((left: number, right: number) => left - right);
+    this.pageSizeOptions = pagingOptions;
+    console.log(this.pageSizeOptions)
   }
 
   ngOnDestroy(): void {
@@ -84,9 +113,7 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
 
   private setGridData(gridData: any[]) {
     this.gridData = gridData;
-    if (this.pageSize) {
-      this.computeDisplayedData();
-    }
+    this.computeDisplayedData();
   }
 
   // Dev note: Potentially, this can be located into a "grid-paging.service" for the logic
@@ -109,9 +136,37 @@ export class GridComponent implements AfterContentInit, OnInit, OnDestroy {
 
   handlePageChange(pageNumber: number) {
     this.currentPage = pageNumber;
-    if (this.pageSize) {
-      this.computeDisplayedData();
-      this.pageNumberChange.emit(pageNumber);
-    }
+    this.computeDisplayedData();
+    this.pageNumberChange.emit(pageNumber);
   }
+
+  handleSort(propertyName: string) {
+    const sortColumn = this.sortConfig?.column;
+    const sortDirection = this.sortConfig?.direction;
+
+    // If the current sorted column is the same as the property name, we just need to change the direction
+    if (sortColumn === propertyName) {
+      if (sortDirection === SortConfigDirection.ASC) {
+        this.sortDisplayedData(propertyName, SortConfigDirection.DESC);
+      } else {
+        this.sortDisplayedData(propertyName, SortConfigDirection.ASC);
+      }
+    } else {
+      this.sortDisplayedData(propertyName, SortConfigDirection.ASC); // Default sort is always ASC
+    }
+ }
+
+ private sortDisplayedData(propertyName: string, sortDirection: SortConfigDirection) {
+  const sortedData = sortData(this.gridData, propertyName, sortDirection);
+    this.gridData = sortedData;
+    const pageSize = Number(this.paginationForm.get('pageSize')?.value);
+    this.updateDisplayedData(pageSize);
+
+    this.sortConfig = {
+      column: propertyName,
+      direction: sortDirection
+    }
+
+    this.sortChange.emit(this.sortConfig);
+ }
 }
