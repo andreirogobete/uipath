@@ -19,13 +19,13 @@ export class AppComponent implements OnDestroy {
     //   this.data = userData.users;
     // });
 
+    // this.subscription.add(sub);
+
     this.data = this.http.get('../assets/data/users.json').pipe(
       map((response: any) => {
         return response.users;
       })
     );
-
-    // this.subscription.add(sub);
   }
 
 
@@ -46,5 +46,10 @@ export class AppComponent implements OnDestroy {
 
   handlePageNumberChange(event: any) {
     console.log(`Grid page number has changed to page number ${event}.`)
+  }
+
+  // Progress Indicator events -> Console log only
+  handleProgressBarComplete() {
+    console.log("Progress Indicator has completed")
   }
 }
