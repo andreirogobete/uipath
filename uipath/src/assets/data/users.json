@@ -1,161 +1,142 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "password": "test",
       "username": "andrei.rogobete",
       "firstName": "Andrei",
       "lastName": "Rogobete",
-      "role": "MANAGER",
-      "type": "[Users] Create User"
+      "role": "MANAGER"
     },
     {
-      "id": "2",
+      "id": 2,
+      "username": "test.username",
+      "firstName": "Test",
+      "lastName": "Username 1",
+      "role": "USER"
+    },
+    {
+      "id": 3,
+      "username": "test.username",
+      "firstName": "Test 2",
+      "lastName": "Username 2",
+      "role": "MANAGER"
+    },
+    {
+      "id": 4,
+      "username": "test.username",
+      "firstName": "Test 3",
+      "lastName": "Username 3",
+      "role": "USER"
+    },
+    {
+      "id": 5,
+      "username": "test.username",
+      "firstName": "Test 4",
+      "lastName": "Username 4",
+      "role": "MANAGER"
+    },
+    {
+      "id": 6,
+      "username": "test.username",
+      "firstName": "Test 5",
+      "lastName": "Username 5",
+      "role": "USER"
+    },
+    {
+      "id": 7,
+      "username": "test.username",
+      "firstName": "Test 6",
+      "lastName": "Username 6",
+      "role": "MANAGER"
+    },
+    {
+      "id": 8,
+      "username": "test.username",
+      "firstName": "Test 7",
+      "lastName": "Username 7",
+      "role": "USER"
+    },
+    {
+      "id": 9,
+      "username": "test.username",
+      "firstName": "Test 8",
+      "lastName": "Username 8",
+      "role": "MANAGER"
+    },
+    {
+      "id": 10,
+      "username": "test.username",
+      "firstName": "Test 9",
+      "lastName": "Username",
+      "role": "AGENT"
+    },
+    {
+      "id": 11,
+      "username": "test.username",
+      "firstName": "Test 10",
+      "lastName": "Username",
+      "role": "MANAGER"
+    },
+    {
+      "id": 12,
       "username": "test.username",
       "firstName": "Test",
       "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
+      "role": "AGENT"
     },
     {
-      "id": "3",
+      "id": 13,
+      "username": "test.username",
+      "firstName": "Test 11",
+      "lastName": "Username",
+      "role": "MANAGER"
+    },
+    {
+      "id": 14,
       "username": "test.username",
       "firstName": "Test",
       "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
+      "role": "AGENT"
     },
     {
-      "id": "4",
+      "id": 15,
+      "username": "test.username",
+      "firstName": "Test 12",
+      "lastName": "Username",
+      "role": "MANAGER"
+    },
+    {
+      "id": 16,
       "username": "test.username",
       "firstName": "Test",
       "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
+      "role": "AGENT"
     },
     {
-      "id": "5",
+      "id": 17,
+      "username": "test.username",
+      "firstName": "Test 13",
+      "lastName": "Username",
+      "role": "MANAGER"
+    },
+    {
+      "id": 18,
       "username": "test.username",
       "firstName": "Test",
       "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
+      "role": "MANAGER"
     },
     {
-      "id": "6",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "7",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "8",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "9",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "10",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "11",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "12",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "13",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "14",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "15",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "16",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "17",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "18",
-      "username": "test.username",
-      "firstName": "Test",
-      "lastName": "Username",
-      "role": "MANAGER",
-      "type": "[Users] Update User"
-    },
-    {
-      "id": "19",
+      "id": 19,
       "password": "test",
       "username": "test.admin",
       "firstName": "Test",
       "lastName": "Administrator",
-      "role": "MANAGER",
-      "type": "[Users] Create User"
+      "role": "MANAGER"
     },
     {
-      "id": "20",
+      "id": 20,
       "password": "test",
       "username": "test.user",
       "firstName": "Test",
@@ -163,7 +144,7 @@
       "role": "USER"
     },
     {
-      "id": "21",
+      "id": 21,
       "password": "test",
       "username": "test.test",
       "firstName": "Test",
