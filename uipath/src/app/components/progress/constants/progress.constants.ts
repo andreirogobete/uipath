@@ -1,0 +1,4 @@
+export const PROGRESS_MIN_RADIUS = 50;
+export const PROGRESS_MIN_PROGRESS = 0;
+export const PROGRESS_MAX_PROGRESS = 100;
+export const PROGRESS_DEFAULT_COLOR = '#EFEFEF'

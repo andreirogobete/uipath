@@ -1,0 +1,23 @@
+<div class="container">
+    <div
+        [@progressFill]="{value: progressFillState, params: { currentProgress: currentProgress * 3.6, color: color, animationDuration: speed }}" 
+        class="circular-progress"
+        data-test-id="circular-progress-circle"
+        [ngStyle]="{
+            'width': (circularProgressDiameter) + 'px',
+            'height': (circularProgressDiameter) + 'px'}">
+    </div>
+    <div class="circular-progress-inner-circle" [ngStyle]="{
+        'width': (circularProgressDiameter - progressStroke) + 'px',
+        'height': (circularProgressDiameter - progressStroke) + 'px',
+        'top': (progressStroke / 2) + 'px',
+        'left': (progressStroke / 2) + 'px'}">
+
+        <span 
+            class="progress-value"
+            data-test-id="progress-value"
+            [ngStyle]="{
+                'font-size': progressStroke / 4 + 'rem',
+                'color': color}">{{currentProgress}}%</span>
+    </div>
+</div>
