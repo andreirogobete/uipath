@@ -1,20 +1,15 @@
 <table>
     <thead>
-        <th *ngFor="let gridEntry of gridHeaderConfig" (click)="handleSort(gridEntry.property)" data-test-id="grid-property-header">
+        <th *ngFor="let gridEntry of gridHeaders" (click)="handleSort(gridEntry.property)" data-test-id="grid-property-header">
             <div [ngClass]="{
                     'sort-asc': sortConfig?.direction === sortConfigDirection.ASC && sortConfig?.column === gridEntry.property ,
                     'sort-desc': sortConfig?.direction === sortConfigDirection.DESC && sortConfig?.column === gridEntry.property
-                }"
-            >
-                {{gridEntry.title}}
-            </div>
+                }">{{gridEntry.title}}</div>
         </th>
     </thead>
     <tbody>
         <tr *ngFor="let item of displayedData, index as i" [ngClass]="{'row-count-even': i % 2 !== 0}" data-test-id="grid-row">
-            <td *ngFor="let gridEntry of gridHeaderConfig" data-test-id="grid-row-cell">
-                {{item[gridEntry['property']]}}
-            </td>
+            <td *ngFor="let gridEntry of gridHeaders" data-test-id="grid-row-cell">{{item[gridEntry['property']]}}</td>
         </tr>
     </tbody>
 </table>
